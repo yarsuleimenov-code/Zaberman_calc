@@ -886,90 +886,108 @@
 
       </div>
 
-      <!-- BA NOTES -->
-      <section class="mt-6 bg-white rounded-xl border border-slate-200 p-6">
+<!-- BA NOTES -->
+<section class="mt-6 bg-white rounded-xl border border-slate-200 overflow-hidden">
 
-        <div class="flex items-center gap-2 mb-4">
+  <!-- Header -->
+  <button
+    onclick="toggleBANotes()"
+    class="w-full flex items-center justify-between px-6 py-5 hover:bg-slate-50 transition"
+  >
 
-          <h3 class="font-bold text-slate-800">
-            Business Analysis Notes
-          </h3>
+    <div class="flex items-center gap-2">
 
-          <i data-lucide="file-text" class="w-4 h-4 text-slate-400"></i>
+      <h3 class="font-bold text-slate-800">
+        Business Analysis Notes
+      </h3>
+
+      <i data-lucide="file-text" class="w-4 h-4 text-slate-400"></i>
+
+    </div>
+
+    <i id="baNotesChevron"
+       data-lucide="chevron-down"
+       class="w-5 h-5 text-slate-500 transition-transform">
+    </i>
+
+  </button>
+
+  <!-- Content -->
+  <div id="baNotesContent" class="hidden border-t border-slate-200 p-6">
+
+    <div class="text-sm text-slate-600 space-y-4">
+
+      <div>
+
+        <p class="font-semibold text-slate-800 mb-2">
+          Общая цель страницы
+        </p>
+
+        <p>
+          Index.html является основным рабочим экраном брокера.
+          Весь основной workflow создания quote выполняется на одном экране.
+        </p>
+
+      </div>
+
+      <div>
+
+        <p class="font-semibold text-slate-800 mb-2">
+          Основная логика
+        </p>
+
+        <ul class="list-disc ml-5 space-y-1">
+          <li>Broker-first UX</li>
+          <li>Минимум переходов между экранами</li>
+          <li>Operational logic скрыта от брокера</li>
+          <li>Breakdown вынесен отдельно</li>
+          <li>Все расчеты происходят автоматически</li>
+        </ul>
+
+      </div>
+
+      <div>
+
+        <p class="font-semibold text-slate-800 mb-2">
+          Используемые расчеты
+        </p>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 text-xs space-y-2">
+
+          <p>
+            Physical Volume =
+            (Length × Width × Height × Quantity) / 1728
+          </p>
+
+          <p>
+            Effective Volume =
+            Physical Volume × Stackability Coefficient
+          </p>
+
+          <p>
+            Operational Cost =
+            Pickup + Interstate + Delivery
+          </p>
+
+          <p>
+            Final Price =
+            Operational Cost + Additional Charges + Margin
+          </p>
+
+          <p>
+            Rounded Final Price =
+            CEILING(Final Price, 10)
+          </p>
 
         </div>
 
-        <div class="text-sm text-slate-600 space-y-4">
+      </div>
 
-          <div>
+    </div>
 
-            <p class="font-semibold text-slate-800 mb-2">
-              Общая цель страницы
-            </p>
+  </div>
 
-            <p>
-              Index.html является основным рабочим экраном брокера.
-              Весь основной workflow создания quote выполняется на одном экране.
-            </p>
-
-          </div>
-
-          <div>
-
-            <p class="font-semibold text-slate-800 mb-2">
-              Основная логика
-            </p>
-
-            <ul class="list-disc ml-5 space-y-1">
-              <li>Broker-first UX</li>
-              <li>Минимум переходов между экранами</li>
-              <li>Operational logic скрыта от брокера</li>
-              <li>Breakdown вынесен отдельно</li>
-              <li>Все расчеты происходят автоматически</li>
-            </ul>
-
-          </div>
-
-          <div>
-
-            <p class="font-semibold text-slate-800 mb-2">
-              Используемые расчеты
-            </p>
-
-            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 text-xs space-y-2">
-
-              <p>
-                Physical Volume =
-                (Length × Width × Height × Quantity) / 1728
-              </p>
-
-              <p>
-                Effective Volume =
-                Physical Volume × Stackability Coefficient
-              </p>
-
-              <p>
-                Operational Cost =
-                Pickup + Interstate + Delivery
-              </p>
-
-              <p>
-                Final Price =
-                Operational Cost + Additional Charges + Margin
-              </p>
-
-              <p>
-                Rounded Final Price =
-                CEILING(Final Price, 10)
-              </p>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
+</section>
 
     </div>
 
@@ -978,6 +996,16 @@
 </div>
 
 <script>
+  function toggleBANotes() {
+
+  const content = document.getElementById('baNotesContent');
+  const chevron = document.getElementById('baNotesChevron');
+
+  content.classList.toggle('hidden');
+
+  chevron.classList.toggle('rotate-180');
+
+}
   lucide.createIcons();
 </script>
 
