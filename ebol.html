@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Zaberman Broker Calculator MVP | eBOL</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="bg-slate-100 text-slate-700">
+
+<div class="min-h-screen flex">
+
+  <!-- SIDEBAR -->
+  <aside class="w-64 bg-[#203241] text-slate-300 min-h-screen fixed left-0 top-0 overflow-y-auto">
+
+    <div class="p-6 border-b border-slate-700">
+      <h1 class="text-2xl font-bold text-[#12365a]">zaberman</h1>
+
+      <div class="mt-6 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs font-bold">
+          z
+        </div>
+
+        <div>
+          <p class="text-white font-semibold text-sm">Operations</p>
+          <p class="text-xs text-slate-400">Future eBOL</p>
+        </div>
+      </div>
+    </div>
+
+    <nav class="p-4 text-sm">
+
+      <p class="uppercase text-xs text-slate-500 mb-3">Main</p>
+
+      <div class="mt-2">
+        <div class="flex items-center justify-between px-3 py-2 rounded-lg bg-slate-800 text-white">
+          <div class="flex items-center gap-3">
+            <i data-lucide="calculator" class="w-4"></i>
+            Calculator
+          </div>
+          <i data-lucide="chevron-up" class="w-4"></i>
+        </div>
+
+        <div class="ml-8 mt-2 space-y-2">
+          <a class="block hover:text-white" href="index.html">New Calculation</a>
+          <a class="block hover:text-white" href="drafts.html">My Drafts</a>
+          <a class="block hover:text-white" href="estimates.html">My Estimates</a>
+          <a class="block hover:text-white" href="#">All Calculations</a>
+          <a class="block hover:text-white" href="variables.html">Variables</a>
+        </div>
+      </div>
+
+      <p class="uppercase text-xs text-slate-500 mt-6 mb-3">Future</p>
+
+      <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800" href="breakdown.html">
+        <i data-lucide="file-text" class="w-4"></i>
+        Cost Breakdown
+      </a>
+
+      <a class="flex items-center gap-3 px-3 py-2 mt-2 rounded-lg hover:bg-slate-800" href="invoices.html">
+        <i data-lucide="receipt" class="w-4"></i>
+        Invoices
+      </a>
+
+      <a class="flex items-center gap-3 px-3 py-2 mt-2 rounded-lg bg-slate-800 text-white" href="ebol.html">
+        <i data-lucide="clipboard-check" class="w-4"></i>
+        eBOL
+      </a>
+
+      <a class="flex items-center gap-3 px-3 py-2 mt-2 rounded-lg hover:bg-slate-800" href="orders.html">
+        <i data-lucide="package-check" class="w-4"></i>
+        Orders
+      </a>
+
+    </nav>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="ml-64 w-full">
+
+    <!-- TOPBAR -->
+    <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-30">
+
+      <div>
+        <p class="text-xs text-slate-400">Zaberman › Operations</p>
+        <h2 class="text-lg font-semibold text-slate-800">Electronic Bill of Lading</h2>
+      </div>
+
+      <a href="orders.html" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50">
+        Back to Orders
+      </a>
+
+    </header>
+
+    <div class="p-6">
+
+      <!-- PAGE HEADER -->
+      <section class="bg-white rounded-xl border border-slate-200 p-6 mb-6">
+
+        <div class="flex justify-between items-start">
+
+          <div>
+            <div class="flex items-center gap-3">
+              <h1 class="text-2xl font-bold text-slate-800">eBOL / Item Verification</h1>
+
+              <span class="px-3 py-1 text-xs rounded-full bg-slate-100 text-slate-600 font-semibold">
+                Future Module
+              </span>
+
+              <span class="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-700 font-semibold">
+                Order #ORD-291
+              </span>
+            </div>
+
+            <p class="text-sm text-slate-500 mt-2">
+              Future operational screen for pickup/delivery verification, item photos, signatures, POD and electronic Bill of Lading.
+            </p>
+          </div>
+
+          <div class="text-right text-sm text-slate-500">
+            <p>Lifecycle position:</p>
+            <p class="font-semibold text-slate-800">Order → Pickup → Delivery → POD</p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ORDER SUMMARY -->
+      <section class="grid grid-cols-4 gap-4 mb-6">
+
+        <div class="bg-white rounded-xl border border-slate-200 p-4">
+          <p class="text-xs text-slate-400">Customer</p>
+          <p class="font-bold text-slate-800 mt-1">John Smith</p>
+          <p class="text-xs text-slate-500 mt-1">EST-291 / INV-001</p>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 p-4">
+          <p class="text-xs text-slate-400">Pickup</p>
+          <p class="font-bold text-slate-800 mt-1">Brooklyn, NY</p>
+          <p class="text-xs text-slate-500 mt-1">Scheduled</p>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 p-4">
+          <p class="text-xs text-slate-400">Delivery</p>
+          <p class="font-bold text-slate-800 mt-1">Los Angeles, CA</p>
+          <p class="text-xs text-slate-500 mt-1">Pending</p>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 p-4">
+          <p class="text-xs text-slate-400">eBOL Status</p>
+          <p class="font-bold text-amber-700 mt-1">Incomplete</p>
+          <p class="text-xs text-slate-500 mt-1">Photos/signature required</p>
+        </div>
+
+      </section>
+
+      <!-- WORKFLOW STEPS -->
+      <section class="bg-white rounded-xl border border-slate-200 p-6 mb-6">
+
+        <h3 class="font-bold text-slate-800 mb-4">Operational Workflow</h3>
+
+        <div class="grid grid-cols-5 gap-4 text-sm">
+
+          <div class="border border-green-200 bg-green-50 rounded-lg p-4">
+            <p class="font-semibold text-green-800">1. Order Created</p>
+            <p class="text-xs text-green-700 mt-2">From approved estimate snapshot</p>
+          </div>
+
+          <div class="border border-blue-200 bg-blue-50 rounded-lg p-4">
+            <p class="font-semibold text-blue-800">2. Pickup Check</p>
+            <p class="text-xs text-blue-700 mt-2">Verify items, photos, comments</p>
+          </div>
+
+          <div class="border border-slate-200 bg-slate-50 rounded-lg p-4">
+            <p class="font-semibold text-slate-800">3. In Transit</p>
+            <p class="text-xs text-slate-500 mt-2">Items linked to order</p>
+          </div>
+
+          <div class="border border-slate-200 bg-slate-50 rounded-lg p-4">
+            <p class="font-semibold text-slate-800">4. Delivery Check</p>
+            <p class="text-xs text-slate-500 mt-2">Delivered status + photos</p>
+          </div>
+
+          <div class="border border-slate-200 bg-slate-50 rounded-lg p-4">
+            <p class="font-semibold text-slate-800">5. POD / eBOL</p>
+            <p class="text-xs text-slate-500 mt-2">Signature + final document</p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ITEM VERIFICATION -->
+      <section class="bg-white rounded-xl border border-slate-200 p-6 mb-6">
+
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-slate-800">Item-Level Verification</h3>
+
+          <span class="text-xs text-slate-400">
+            Future mobile workflow for crew
+          </span>
+        </div>
+
+        <div class="overflow-x-auto border border-slate-200 rounded-xl">
+
+          <table class="w-full text-sm min-w-[1200px]">
+
+            <thead class="bg-slate-50 text-slate-500">
+              <tr>
+                <th class="text-left px-4 py-3">Item</th>
+                <th class="text-left px-4 py-3">Flags</th>
+                <th class="text-left px-4 py-3">Pickup Status</th>
+                <th class="text-left px-4 py-3">Delivery Status</th>
+                <th class="text-left px-4 py-3">Pickup Photo</th>
+                <th class="text-left px-4 py-3">Delivery Photo</th>
+                <th class="text-left px-4 py-3">Comment</th>
+              </tr>
+            </thead>
+
+            <tbody class="divide-y divide-slate-200">
+
+              <tr>
+                <td class="px-4 py-3">
+                  <p class="font-medium text-slate-800">Concrete Table</p>
+                  <p class="text-xs text-slate-400">140 × 50 × 20 in · 500 lb</p>
+                </td>
+
+                <td class="px-4 py-3">
+                  <div class="flex gap-2">
+                    <span class="px-2 py-1 rounded bg-red-100 text-red-700 text-xs">Fragile</span>
+                    <span class="px-2 py-1 rounded bg-amber-100 text-amber-700 text-xs">Non-stack</span>
+                    <span class="px-2 py-1 rounded bg-blue-100 text-blue-700 text-xs">Crated</span>
+                  </div>
+                </td>
+
+                <td class="px-4 py-3">
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" checked class="accent-teal-500" />
+                    Picked up
+                  </label>
+                </td>
+
+                <td class="px-4 py-3">
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" class="accent-teal-500" />
+                    Pending
+                  </label>
+                </td>
+
+                <td class="px-4 py-3">
+                  <div class="w-24 h-16 rounded-lg border border-dashed border-slate-300 bg-slate-50 flex items-center justify-center text-slate-400">
+                    <i data-lucide="image" class="w-5"></i>
+                  </div>
+                </td>
+
+                <td class="px-4 py-3">
+                  <div class="w-24 h-16 rounded-lg border border-dashed border-slate-300 bg-slate-50 flex items-center justify-center text-slate-400">
+                    <i data-lucide="camera" class="w-5"></i>
+                  </div>
+                </td>
+
+                <td class="px-4 py-3 text-slate-500">
+                  Heavy item. Requires 2 people.
+                </td>
+              </tr>
+
+              <tr>
+                <td class="px-4 py-3">
+                  <p class="font-medium text-slate-800">Glass Monitor</p>
+                  <p class="text-xs text-slate-400">30 × 8 × 22 in · 25 lb</p>
+                </td>
+
+                <td class="px-4 py-3">
+                  <span class="px-2 py-1 rounded bg-red-100 text-red-700 text-xs">Fragile</span>
+                </td>
+
+                <td class="px-4 py-3">
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" checked class="accent-teal-500" />
+                    Picked up
+                  </label>
+                </td>
+
+                <td class="px-4 py-3">
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" class="accent-teal-500" />
+                    Pending
+                  </label>
+                </td>
+
+                <td class="px-4 py-3">
+                  <div class="w-24 h-16 rounded-lg border border-dashed border-slate-300 bg-slate-50 flex items-center justify-center text-slate-400">
+                    <i data-lucide="image" class="w-5"></i>
+                  </div>
+                </td>
+
+                <td class="px-4 py-3">
+                  <div class="w-24 h-16 rounded-lg border border-dashed border-slate-300 bg-slate-50 flex items-center justify-center text-slate-400">
+                    <i data-lucide="camera" class="w-5"></i>
+                  </div>
+                </td>
+
+                <td class="px-4 py-3 text-slate-500">
+                  Use monitor box.
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+      <!-- PHOTO / SIGNATURE / POD -->
+      <section class="grid grid-cols-3 gap-6 mb-6">
+
+        <div class="bg-white rounded-xl border border-slate-200 p-6">
+          <h3 class="font-bold text-slate-800 mb-4">Photo Requirements</h3>
+
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span>Pickup item photos</span>
+              <b class="text-green-700">2 / 2</b>
+            </div>
+
+            <div class="flex justify-between">
+              <span>Delivery item photos</span>
+              <b class="text-amber-700">0 / 2</b>
+            </div>
+
+            <div class="flex justify-between">
+              <span>Damage photos</span>
+              <b>0</b>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 p-6">
+          <h3 class="font-bold text-slate-800 mb-4">Signatures</h3>
+
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span>Pickup signature</span>
+              <b class="text-green-700">Collected</b>
+            </div>
+
+            <div class="flex justify-between">
+              <span>Delivery signature</span>
+              <b class="text-amber-700">Pending</b>
+            </div>
+
+            <div class="mt-4 border border-dashed border-slate-300 rounded-lg h-20 flex items-center justify-center text-slate-400 text-xs">
+              Signature placeholder
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 p-6">
+          <h3 class="font-bold text-slate-800 mb-4">POD / eBOL Output</h3>
+
+          <div class="space-y-3 text-sm">
+            <p class="text-slate-500">
+              Final eBOL will be generated after delivery photos, item statuses and delivery signature are completed.
+            </p>
+
+            <button class="w-full px-4 py-3 rounded-lg bg-slate-300 text-slate-500 cursor-not-allowed">
+              Generate eBOL PDF
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- BA NOTES -->
+      <section class="mt-6 bg-white rounded-xl border border-slate-200 overflow-hidden">
+
+        <button
+          onclick="toggleBANotes()"
+          class="w-full flex items-center justify-between px-6 py-5 hover:bg-slate-50 transition"
+        >
+          <div class="flex items-center gap-2">
+            <h3 class="font-bold text-slate-800">Business Analysis Notes</h3>
+            <i data-lucide="file-text" class="w-4 h-4 text-slate-400"></i>
+          </div>
+
+          <i id="baNotesChevron" data-lucide="chevron-down" class="w-5 h-5 text-slate-500 transition-transform"></i>
+        </button>
+
+        <div id="baNotesContent" class="hidden border-t border-slate-200 p-6">
+
+          <div class="text-sm text-slate-600 space-y-5">
+
+            <div>
+              <h4 class="font-semibold text-slate-800 mb-2">Цель страницы</h4>
+              <p>
+                eBOL.html показывает будущий operational workflow после создания Order.
+                Страница нужна для демонстрации item-level verification, pickup/delivery proof, photos, signatures и POD.
+              </p>
+            </div>
+
+            <div>
+              <h4 class="font-semibold text-slate-800 mb-2">Ключевое правило</h4>
+              <p>
+                eBOL не должен пересчитывать цену. Он работает с frozen estimate snapshot и фиксирует факт выполнения перевозки.
+              </p>
+            </div>
+
+            <div>
+              <h4 class="font-semibold text-slate-800 mb-2">Best practice для логистики</h4>
+              <ul class="list-disc ml-5 space-y-2">
+                <li>Каждый item должен иметь отдельный pickup/delivery status.</li>
+                <li>Photos должны быть привязаны к item, а не только к order.</li>
+                <li>Damage должен фиксироваться отдельно с фото, комментарием и timestamp.</li>
+                <li>Delivery POD должен включать delivered items, photos, timestamp и recipient signature.</li>
+                <li>eBOL должен генерироваться только после completion required steps.</li>
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+</div>
+
+<script>
+  function toggleBANotes() {
+    const content = document.getElementById('baNotesContent');
+    const chevron = document.getElementById('baNotesChevron');
+
+    content.classList.toggle('hidden');
+    chevron.classList.toggle('rotate-180');
+  }
+
+  lucide.createIcons();
+</script>
+
+</body>
+</html>
