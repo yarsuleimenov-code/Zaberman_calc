@@ -582,59 +582,31 @@
 
           <!-- ITEMS -->
           <section class="bg-white rounded-xl border border-slate-200 p-5">
-
+          
             <div class="flex items-center justify-between mb-4">
-
               <div class="flex items-center gap-2">
-
-                <h3 class="font-bold text-slate-800">
-                  Items
-                </h3>
-
-                <!-- Tooltip -->
+                <h3 class="font-bold text-slate-800">Items</h3>
+          
                 <div class="relative group">
-
                   <i data-lucide="info" class="w-4 h-4 text-slate-400 cursor-pointer"></i>
-
+          
                   <div class="absolute hidden group-hover:block z-50 w-80 p-4 bg-white border border-slate-200 rounded-xl shadow-xl text-xs text-slate-600 left-0 top-6">
-
-                    <p>
-                      <b>Назначение:</b> item-level operational logic.
-                    </p>
-
-                    <p class="mt-2">
-                      На основании items система рассчитывает:
-                    </p>
-
-                    <ul class="list-disc ml-5 mt-2 space-y-1">
-                      <li>volume</li>
-                      <li>effective volume</li>
-                      <li>vehicle fit</li>
-                      <li>handling impact</li>
-                      <li>packaging cost</li>
-                    </ul>
-
+                    <p><b>Назначение:</b> основной список items для быстрого quote.</p>
+                    <p class="mt-2">Каждая строка влияет на volume, effective volume, vehicle fit, packaging и handling.</p>
                   </div>
-
                 </div>
-
               </div>
-
+          
               <button class="px-3 py-2 rounded-lg bg-teal-500 text-white text-sm hover:bg-teal-600">
                 Add Item
               </button>
-
             </div>
-
-            <!-- TABLE -->
+          
             <div class="overflow-x-auto border border-slate-200 rounded-xl">
-
-              <table class="w-full text-sm min-w-[1300px]">
-
+              <table class="w-full text-sm min-w-[1500px]">
+          
                 <thead class="bg-slate-50 text-slate-500">
-
                   <tr>
-
                     <th class="text-left px-3 py-3">Item</th>
                     <th class="text-left px-3 py-3">Category</th>
                     <th class="text-left px-3 py-3">L</th>
@@ -642,102 +614,164 @@
                     <th class="text-left px-3 py-3">H</th>
                     <th class="text-left px-3 py-3">Weight</th>
                     <th class="text-left px-3 py-3">Qty</th>
+                    <th class="text-left px-3 py-3">Value</th>
                     <th class="text-left px-3 py-3">Packaging</th>
                     <th class="text-center px-3 py-3">Fragile</th>
                     <th class="text-center px-3 py-3">Non-stack</th>
                     <th class="text-center px-3 py-3">Crate</th>
                     <th class="text-left px-3 py-3">Eff. Vol.</th>
                     <th class="text-left px-3 py-3">Comment</th>
-
                   </tr>
-
                 </thead>
-
+          
                 <tbody class="divide-y divide-slate-200">
-
-                  <!-- ROW -->
+          
+                  <!-- Existing item -->
                   <tr>
-
                     <td class="px-3 py-3">
                       <input class="border rounded-lg px-2 py-2 w-52" value="Concrete Table" />
                     </td>
-
+          
                     <td class="px-3 py-3">
-
                       <select class="border rounded-lg px-2 py-2 w-32">
-
                         <option>Furniture</option>
                         <option>Electronics</option>
                         <option>Art</option>
-
+                        <option>Appliance</option>
                       </select>
-
                     </td>
-
+          
                     <td class="px-3 py-3">
                       <input class="border rounded-lg px-2 py-2 w-16" value="140" />
                     </td>
-
+          
                     <td class="px-3 py-3">
                       <input class="border rounded-lg px-2 py-2 w-16" value="50" />
                     </td>
-
+          
                     <td class="px-3 py-3">
                       <input class="border rounded-lg px-2 py-2 w-16" value="20" />
                     </td>
-
+          
                     <td class="px-3 py-3">
                       <input class="border rounded-lg px-2 py-2 w-20" value="500" />
                     </td>
-
+          
                     <td class="px-3 py-3">
                       <input class="border rounded-lg px-2 py-2 w-16" value="1" />
                     </td>
-
+          
                     <td class="px-3 py-3">
-
+                      <input class="border rounded-lg px-2 py-2 w-24" value="1500" />
+                    </td>
+          
+                    <td class="px-3 py-3">
                       <select class="border rounded-lg px-2 py-2 w-44">
-
                         <option>Custom Crate</option>
                         <option>Blanket Wrap</option>
                         <option>TV / Monitor Box</option>
                         <option>Bubble Protection</option>
                         <option>None</option>
-
                       </select>
-
                     </td>
-
+          
                     <td class="px-3 py-3 text-center">
                       <input type="checkbox" checked class="accent-teal-500" />
                     </td>
-
+          
                     <td class="px-3 py-3 text-center">
                       <input type="checkbox" checked class="accent-teal-500" />
                     </td>
-
+          
                     <td class="px-3 py-3 text-center">
                       <input type="checkbox" checked class="accent-teal-500" />
                     </td>
-
+          
                     <td class="px-3 py-3 font-semibold text-amber-700">
                       128
                     </td>
-
+          
                     <td class="px-3 py-3">
-                      <input class="border rounded-lg px-2 py-2 w-56" value="Requires 2 people" />
+                      <input class="border rounded-lg px-2 py-2 w-64" value="Requires 2 people" />
                     </td>
-
                   </tr>
-
+          
+                  <!-- Empty row after Add Item -->
+                  <tr class="bg-white">
+                    <td class="px-3 py-3">
+                      <input class="border rounded-lg px-2 py-2 w-52" placeholder="Item name" />
+                    </td>
+          
+                    <td class="px-3 py-3">
+                      <select class="border rounded-lg px-2 py-2 w-32 text-slate-500">
+                        <option>Select</option>
+                        <option>Furniture</option>
+                        <option>Electronics</option>
+                        <option>Art</option>
+                        <option>Appliance</option>
+                      </select>
+                    </td>
+          
+                    <td class="px-3 py-3">
+                      <input class="border rounded-lg px-2 py-2 w-16" placeholder="L" />
+                    </td>
+          
+                    <td class="px-3 py-3">
+                      <input class="border rounded-lg px-2 py-2 w-16" placeholder="W" />
+                    </td>
+          
+                    <td class="px-3 py-3">
+                      <input class="border rounded-lg px-2 py-2 w-16" placeholder="H" />
+                    </td>
+          
+                    <td class="px-3 py-3">
+                      <input class="border rounded-lg px-2 py-2 w-20" placeholder="lb" />
+                    </td>
+          
+                    <td class="px-3 py-3">
+                      <input class="border rounded-lg px-2 py-2 w-16" value="1" />
+                    </td>
+          
+                    <td class="px-3 py-3">
+                      <input class="border rounded-lg px-2 py-2 w-24" placeholder="$" />
+                    </td>
+          
+                    <td class="px-3 py-3">
+                      <select class="border rounded-lg px-2 py-2 w-44 text-slate-500">
+                        <option>None</option>
+                        <option>Blanket Wrap</option>
+                        <option>TV / Monitor Box</option>
+                        <option>Bubble Protection</option>
+                        <option>Custom Crate</option>
+                      </select>
+                    </td>
+          
+                    <td class="px-3 py-3 text-center">
+                      <input type="checkbox" class="accent-teal-500" />
+                    </td>
+          
+                    <td class="px-3 py-3 text-center">
+                      <input type="checkbox" class="accent-teal-500" />
+                    </td>
+          
+                    <td class="px-3 py-3 text-center">
+                      <input type="checkbox" class="accent-teal-500" />
+                    </td>
+          
+                    <td class="px-3 py-3 text-slate-400">
+                      auto
+                    </td>
+          
+                    <td class="px-3 py-3">
+                      <input class="border rounded-lg px-2 py-2 w-64" placeholder="Comment" />
+                    </td>
+                  </tr>
+          
                 </tbody>
-
               </table>
-
             </div>
-
+          
           </section>
-
         </div>
 
         <!-- RIGHT -->
@@ -828,7 +862,7 @@
 
                 <div class="flex justify-between">
                   <span>Item Lines</span>
-                  <b>1</b>
+                  <b>2</b>
                 </div>
 
                 <div class="flex justify-between">
@@ -849,31 +883,6 @@
                 <div class="flex justify-between">
                   <span>Nearest Route</span>
                   <b>May 24</b>
-                </div>
-
-              </div>
-
-            </section>
-
-            <!-- WARNINGS -->
-            <section class="bg-white rounded-xl border border-slate-200 p-5">
-
-              <h3 class="font-bold text-slate-800 mb-4">
-                Warnings
-              </h3>
-
-              <div class="space-y-3 text-sm">
-
-                <div class="p-3 rounded-lg bg-red-50 text-red-700">
-                  Heavy item requires 2-person handling.
-                </div>
-
-                <div class="p-3 rounded-lg bg-amber-50 text-amber-700">
-                  Non-stackable item increases effective volume.
-                </div>
-
-                <div class="p-3 rounded-lg bg-blue-50 text-blue-700">
-                  Final price rounded up to nearest $10.
                 </div>
 
               </div>
