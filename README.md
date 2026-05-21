@@ -1,6 +1,6 @@
 # Zaberman Broker Calculator MVP
 
-Operational pricing system для interstate-перевозок мебели, fragile cargo, white-glove delivery и будущих eBOL workflows.
+Operational pricing system для interstate-перевозок мебели, fragile cargo, full service delivery и будущих eBOL workflows.
 
 Проект разрабатывается как broker-first operational calculator с акцентом на:
 - быстрое создание quote;
@@ -495,7 +495,7 @@ Operational и pricing complexity должны находиться внутри
 
 # Zaberman Broker Calculator MVP
 
-Operational pricing system for interstate furniture delivery, fragile cargo handling, white-glove transportation, and future eBOL workflows.
+Operational pricing system for interstate furniture delivery, fragile cargo handling, full service transportation, and future eBOL workflows.
 
 The project is designed as a broker-first operational calculator focused on fast quote creation, centralized pricing logic, operational transparency, and future scalability.
 
