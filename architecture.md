@@ -2,7 +2,7 @@
 
 ## 1. Назначение системы
 
-Zaberman Broker Calculator MVP проектируется как operational pricing system для interstate перевозок мебели, bulky items, fragile cargo и white-glove delivery.
+Zaberman Broker Calculator MVP проектируется как operational pricing system для interstate перевозок мебели, bulky items, fragile cargo и full service delivery.
 
 Основная задача системы:
 - ускорить создание quote;
