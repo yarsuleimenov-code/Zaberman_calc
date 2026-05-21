@@ -529,7 +529,7 @@
             <div>
               <h3 class="font-bold text-slate-800">Service Areas</h3>
               <p class="text-xs text-slate-400 mt-1">
-                Zones used for route, delivery options and regional pricing rules.
+                Zone-level pricing values used by route and regional cost calculations.
               </p>
             </div>
 
@@ -537,15 +537,15 @@
               <i data-lucide="info" class="w-4 h-4 text-slate-400 cursor-pointer"></i>
 
               <div class="absolute hidden group-hover:block z-50 w-96 p-4 bg-white border border-slate-200 rounded-xl shadow-xl text-xs text-slate-600 left-0 top-6">
-                <p><b>Назначение:</b> справочник service areas и regional rules.</p>
+                <p><b>Назначение:</b> справочник service areas с числовыми regional cost values.</p>
 
                 <p class="mt-2">
-                  Чекбоксы определяют, какие regional cost components могут применяться к зоне.
-                  Сами суммы хранятся в Variables.
+                  Вместо checkbox logic используются конкретные значения по зоне.
+                  Это упрощает формулу и позволяет управлять tolls, parking и ticket risk отдельно для каждого региона.
                 </p>
 
                 <p class="mt-2">
-                  Пример: для NYC включаются tolls, parking и ticket risk. Для CA South эти параметры могут быть выключены.
+                  Если fee не применяется, значение должно быть 0.
                 </p>
               </div>
             </div>
@@ -559,16 +559,18 @@
 
         <div class="overflow-x-auto border border-slate-200 rounded-xl">
 
-          <table class="w-full text-sm min-w-[1000px]">
+          <table class="w-full text-sm min-w-[1200px]">
 
             <thead class="bg-slate-50 text-slate-500">
               <tr>
                 <th class="text-left px-4 py-3">Zone</th>
                 <th class="text-left px-4 py-3">Region</th>
-                <th class="text-center px-4 py-3">Tolls</th>
-                <th class="text-center px-4 py-3">Parking</th>
-                <th class="text-center px-4 py-3">Ticket Risk</th>
-                <th class="text-center px-4 py-3">Zone Surcharge</th>
+                <th class="text-left px-4 py-3">Applies To</th>
+                <th class="text-left px-4 py-3">Toll Fee, $</th>
+                <th class="text-left px-4 py-3">Parking Fee, $</th>
+                <th class="text-left px-4 py-3">Ticket Risk, $</th>
+                <th class="text-left px-4 py-3">Zone Surcharge, $</th>
+                <th class="text-left px-4 py-3">Notes</th>
                 <th class="text-center px-4 py-3">Active</th>
               </tr>
             </thead>
@@ -579,24 +581,39 @@
                 <td class="px-4 py-3 font-medium text-slate-800">NYC</td>
                 <td class="px-4 py-3">East Coast</td>
 
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
+                <td class="px-4 py-3">
+                  <select class="border rounded-lg px-3 py-2 w-28">
+                    <option>Both</option>
+                    <option>Pickup</option>
+                    <option>Delivery</option>
+                  </select>
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="45" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="25" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="40" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="60" />
+                </td>
+
+                <td class="px-4 py-3 text-slate-500">
+                  Dense urban zone
                 </td>
 
                 <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
+                  <label class="inline-flex items-center gap-2">
+                    <input type="checkbox" checked class="accent-teal-500" />
+                    <span class="text-xs text-slate-500">Active</span>
+                  </label>
                 </td>
               </tr>
 
@@ -604,24 +621,39 @@
                 <td class="px-4 py-3 font-medium text-slate-800">NY Area</td>
                 <td class="px-4 py-3">East Coast</td>
 
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
+                <td class="px-4 py-3">
+                  <select class="border rounded-lg px-3 py-2 w-28">
+                    <option>Both</option>
+                    <option>Pickup</option>
+                    <option>Delivery</option>
+                  </select>
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="25" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="10" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="0" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="30" />
+                </td>
+
+                <td class="px-4 py-3 text-slate-500">
+                  General NY metro area
                 </td>
 
                 <td class="px-4 py-3 text-center">
-                  <input type="checkbox" class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
+                  <label class="inline-flex items-center gap-2">
+                    <input type="checkbox" checked class="accent-teal-500" />
+                    <span class="text-xs text-slate-500">Active</span>
+                  </label>
                 </td>
               </tr>
 
@@ -629,24 +661,39 @@
                 <td class="px-4 py-3 font-medium text-slate-800">Boston</td>
                 <td class="px-4 py-3">East Coast</td>
 
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
+                <td class="px-4 py-3">
+                  <select class="border rounded-lg px-3 py-2 w-28">
+                    <option>Both</option>
+                    <option>Pickup</option>
+                    <option>Delivery</option>
+                  </select>
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="18" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="0" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="0" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="20" />
+                </td>
+
+                <td class="px-4 py-3 text-slate-500">
+                  Standard city zone
                 </td>
 
                 <td class="px-4 py-3 text-center">
-                  <input type="checkbox" class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
+                  <label class="inline-flex items-center gap-2">
+                    <input type="checkbox" checked class="accent-teal-500" />
+                    <span class="text-xs text-slate-500">Active</span>
+                  </label>
                 </td>
               </tr>
 
@@ -654,24 +701,39 @@
                 <td class="px-4 py-3 font-medium text-slate-800">Washington DC</td>
                 <td class="px-4 py-3">East Coast</td>
 
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
+                <td class="px-4 py-3">
+                  <select class="border rounded-lg px-3 py-2 w-28">
+                    <option>Both</option>
+                    <option>Pickup</option>
+                    <option>Delivery</option>
+                  </select>
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="20" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="0" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="0" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="20" />
+                </td>
+
+                <td class="px-4 py-3 text-slate-500">
+                  Standard city zone
                 </td>
 
                 <td class="px-4 py-3 text-center">
-                  <input type="checkbox" class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
+                  <label class="inline-flex items-center gap-2">
+                    <input type="checkbox" checked class="accent-teal-500" />
+                    <span class="text-xs text-slate-500">Active</span>
+                  </label>
                 </td>
               </tr>
 
@@ -679,24 +741,39 @@
                 <td class="px-4 py-3 font-medium text-slate-800">CA South</td>
                 <td class="px-4 py-3">West Coast</td>
 
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" class="accent-teal-500" />
+                <td class="px-4 py-3">
+                  <select class="border rounded-lg px-3 py-2 w-28">
+                    <option>Both</option>
+                    <option>Pickup</option>
+                    <option>Delivery</option>
+                  </select>
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="0" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="0" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="0" />
+                </td>
+
+                <td class="px-4 py-3">
+                  <input class="border rounded-lg px-3 py-2 w-24" value="30" />
+                </td>
+
+                <td class="px-4 py-3 text-slate-500">
+                  West coast zone
                 </td>
 
                 <td class="px-4 py-3 text-center">
-                  <input type="checkbox" class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
-                </td>
-
-                <td class="px-4 py-3 text-center">
-                  <input type="checkbox" checked class="accent-teal-500" />
+                  <label class="inline-flex items-center gap-2">
+                    <input type="checkbox" checked class="accent-teal-500" />
+                    <span class="text-xs text-slate-500">Active</span>
+                  </label>
                 </td>
               </tr>
 
@@ -704,6 +781,11 @@
 
           </table>
 
+        </div>
+
+        <div class="mt-4 bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600">
+          Regional Charges = Toll Fee + Parking Fee + Ticket Risk + Zone Surcharge.
+          If a component is not applicable, use 0.
         </div>
 
       </section>
@@ -839,9 +921,13 @@
             <div>
               <h4 class="font-semibold text-slate-800 mb-2">Regional Rules</h4>
               <p>
-                Чекбоксы в Service Areas не задают суммы напрямую.
-                Они определяют, какие regional cost components применимы к зоне.
-                Сами значения tolls, parking, ticket risk и surcharge должны храниться в Variables.
+                Service Areas используют numeric regional values
+                Это позволяет задавать tolls, parking, ticket risk и surcharge отдельно для каждой зоны.
+              </p>
+            
+              <p class="mt-2">
+                Если regional component не применяется, значение должно быть 0.
+                Это упрощает pricing formula и снижает количество IF-условий.
               </p>
             </div>
 
