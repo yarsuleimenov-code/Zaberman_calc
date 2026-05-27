@@ -27,7 +27,8 @@ const futureItems = [
 ];
 
 const referenceItems = [
-  { label: "Lifecycle", href: "lifecycle.html", icon: "git-branch" }
+  { label: "Lifecycle", href: "lifecycle.html", icon: "git-branch" },
+  { label: "Estimate Document", href: "estimate-document.html", icon: "file-badge" }
 ];
 
 function isActive(href) {
