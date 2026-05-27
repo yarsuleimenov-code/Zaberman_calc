@@ -1295,6 +1295,265 @@
 
       </section>
 
+            <!-- BUSINESS RULES & VALIDATION -->
+      <section class="bg-white rounded-xl border border-slate-200 overflow-hidden mb-6">
+
+        <div class="px-5 py-4 border-b border-slate-200 bg-slate-50">
+          <h3 class="font-bold text-slate-800">Business Rules & Validation</h3>
+
+          <p class="text-sm text-slate-500 mt-1">
+            Дополнительные правила pricing governance, validation и quote lifecycle.
+          </p>
+        </div>
+
+        <div class="overflow-x-auto">
+
+          <table class="w-full text-sm min-w-[1400px]">
+
+            <thead class="bg-slate-100 text-slate-600">
+
+              <tr>
+
+                <th class="text-left px-4 py-3 font-semibold">Formula / Variable</th>
+
+                <th class="text-left px-4 py-3 font-semibold">Formula</th>
+
+                <th class="text-left px-4 py-3 font-semibold">Description</th>
+
+                <th class="text-left px-4 py-3 font-semibold">Level</th>
+
+                <th class="text-left px-4 py-3 font-semibold">Used In</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody class="divide-y divide-slate-200">
+
+              <tr>
+
+                <td class="px-4 py-3 font-semibold text-slate-800">Pickup Zone Fee</td>
+
+                <td class="px-4 py-3 font-mono text-xs">
+                  Based on Pickup ZIP Zone
+                </td>
+
+                <td class="px-4 py-3">
+                  Дополнительная стоимость pickup zone.
+                </td>
+
+                <td class="px-4 py-3">Route</td>
+
+                <td class="px-4 py-3">Zone Logic</td>
+
+              </tr>
+
+              <tr>
+
+                <td class="px-4 py-3 font-semibold text-slate-800">Delivery Zone Fee</td>
+
+                <td class="px-4 py-3 font-mono text-xs">
+                  Based on Delivery ZIP Zone
+                </td>
+
+                <td class="px-4 py-3">
+                  Дополнительная стоимость delivery zone.
+                </td>
+
+                <td class="px-4 py-3">Route</td>
+
+                <td class="px-4 py-3">Zone Logic</td>
+
+              </tr>
+
+              <tr>
+
+                <td class="px-4 py-3 font-semibold text-slate-800">Zone Pair Multiplier</td>
+
+                <td class="px-4 py-3 font-mono text-xs">
+                  Pickup Zone × Delivery Zone Matrix
+                </td>
+
+                <td class="px-4 py-3">
+                  Коэффициент сложности маршрута между зонами.
+                </td>
+
+                <td class="px-4 py-3">Route</td>
+
+                <td class="px-4 py-3">Route Pricing</td>
+
+              </tr>
+
+              <tr>
+
+                <td class="px-4 py-3 font-semibold text-slate-800">Requested Date Priority Fee</td>
+
+                <td class="px-4 py-3 font-mono text-xs">
+                  IF(Priority Date Requested, Priority Fee, 0)
+                </td>
+
+                <td class="px-4 py-3">
+                  Доплата за приоритетную дату доставки.
+                </td>
+
+                <td class="px-4 py-3">Pricing</td>
+
+                <td class="px-4 py-3">Additional Charges</td>
+
+              </tr>
+
+              <tr>
+
+                <td class="px-4 py-3 font-semibold text-slate-800">Manual Review Flag</td>
+
+                <td class="px-4 py-3 font-mono text-xs">
+                  IF(Complexity Threshold Exceeded, TRUE, FALSE)
+                </td>
+
+                <td class="px-4 py-3">
+                  Требуется ручная проверка pricing или operations.
+                </td>
+
+                <td class="px-4 py-3">Validation</td>
+
+                <td class="px-4 py-3">Workflow Governance</td>
+
+              </tr>
+
+              <tr>
+
+                <td class="px-4 py-3 font-semibold text-slate-800">Minimum Operational Cost</td>
+
+                <td class="px-4 py-3 font-mono text-xs">
+                  MAX(Operational Cost, Operational Cost Floor)
+                </td>
+
+                <td class="px-4 py-3">
+                  Минимально допустимая operational cost.
+                </td>
+
+                <td class="px-4 py-3">Pricing</td>
+
+                <td class="px-4 py-3">Pricing Validation</td>
+
+              </tr>
+
+              <tr>
+
+                <td class="px-4 py-3 font-semibold text-slate-800">Minimum Margin Rule</td>
+
+                <td class="px-4 py-3 font-mono text-xs">
+                  IF(Margin % < Margin Floor, Validation Error)
+                </td>
+
+                <td class="px-4 py-3">
+                  Защита от убыточных estimates.
+                </td>
+
+                <td class="px-4 py-3">Pricing</td>
+
+                <td class="px-4 py-3">Approval Workflow</td>
+
+              </tr>
+
+              <tr>
+
+                <td class="px-4 py-3 font-semibold text-slate-800">Discount Approval Rule</td>
+
+                <td class="px-4 py-3 font-mono text-xs">
+                  IF(Discount > Approval Threshold, Manager Approval Required)
+                </td>
+
+                <td class="px-4 py-3">
+                  Ограничение ручных скидок.
+                </td>
+
+                <td class="px-4 py-3">Pricing</td>
+
+                <td class="px-4 py-3">Commercial Governance</td>
+
+              </tr>
+
+              <tr>
+
+                <td class="px-4 py-3 font-semibold text-slate-800">Estimate Expiration Rule</td>
+
+                <td class="px-4 py-3 font-mono text-xs">
+                  Estimate Created Date + Expiration Period
+                </td>
+
+                <td class="px-4 py-3">
+                  Правило истечения срока актуальности estimate.
+                </td>
+
+                <td class="px-4 py-3">Estimate</td>
+
+                <td class="px-4 py-3">Lifecycle</td>
+
+              </tr>
+
+              <tr>
+
+                <td class="px-4 py-3 font-semibold text-slate-800">Requote Required Flag</td>
+
+                <td class="px-4 py-3 font-mono text-xs">
+                  IF(Expired OR Variables Changed, TRUE, FALSE)
+                </td>
+
+                <td class="px-4 py-3">
+                  Требуется пересчёт estimate.
+                </td>
+
+                <td class="px-4 py-3">Estimate</td>
+
+                <td class="px-4 py-3">Lifecycle</td>
+
+              </tr>
+
+              <tr>
+
+                <td class="px-4 py-3 font-semibold text-slate-800">eBOL Ready Flag</td>
+
+                <td class="px-4 py-3 font-mono text-xs">
+                  IF(All Required Item Data Completed, TRUE, FALSE)
+                </td>
+
+                <td class="px-4 py-3">
+                  Проверка готовности order к eBOL workflow.
+                </td>
+
+                <td class="px-4 py-3">eBOL</td>
+
+                <td class="px-4 py-3">Operational Workflow</td>
+
+              </tr>
+
+              <tr>
+
+                <td class="px-4 py-3 font-semibold text-slate-800">Required Photos Count</td>
+
+                <td class="px-4 py-3 font-mono text-xs">
+                  Based on Item Type + Insurance Level
+                </td>
+
+                <td class="px-4 py-3">
+                  Минимальное количество required photos для eBOL.
+                </td>
+
+                <td class="px-4 py-3">eBOL</td>
+
+                <td class="px-4 py-3">Operational Verification</td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
       <!-- BA NOTES -->
       <section class="bg-white rounded-xl border border-slate-200 overflow-hidden mb-6">
 
