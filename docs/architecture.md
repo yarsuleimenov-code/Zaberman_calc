@@ -4,11 +4,12 @@
 
 Zaberman Broker Calculator MVP проектируется как operational pricing system для interstate перевозок мебели, bulky items, fragile cargo и full service delivery.
 
-Основная задача системы:
-- ускорить создание quote;
+Система должна:
+- ускорять создание quote;
 - стандартизировать pricing logic;
-- снизить ручные расчёты;
-- сделать стоимость explainable и audit-friendly.
+- снижать ручные расчёты;
+- обеспечивать explainable pricing;
+- формировать foundation для будущего operational workflow и eBOL.
 
 Главный принцип системы:
 
@@ -20,118 +21,225 @@ Zaberman Broker Calculator MVP проектируется как operational pri
 
 ---
 
-## 2. Границы MVP
+# 2. Целевая концепция системы
 
-MVP состоит из трёх основных слоёв:
+Система разделяется на три основных слоя:
 
 ```text
-1. Broker Quote Creation
-2. Pricing Breakdown / Audit
-3. Admin Variables / Pricing Governance
+Commercial Layer
+↓
+Pricing Engine Layer
+↓
+Operational Layer
 ```
-
-Дополнительные экраны:
-- Drafts
-- Estimates
-- Future: Invoice
-- Future: Orders
-- Future: eBOL
 
 ---
 
-## 3. Основные экраны
+## Commercial Layer
 
-### 3.1 index.html — Broker Quote Screen
+Отвечает за:
+- quote creation;
+- estimate generation;
+- customer-facing pricing;
+- invoices;
+- commercial workflow.
+
+---
+
+## Pricing Engine Layer
+
+Отвечает за:
+- formulas;
+- operational coefficients;
+- vehicle fit;
+- helper logic;
+- access logic;
+- pricing calculations;
+- variables governance.
+
+---
+
+## Operational Layer
+
+Отвечает за:
+- orders;
+- pickup;
+- delivery;
+- eBOL;
+- POD;
+- item verification;
+- photos;
+- signatures;
+- exceptions.
+
+---
+
+# 3. Границы MVP
+
+Текущий MVP покрывает:
+
+```text
+Draft
+↓
+Estimate
+↓
+Breakdown
+↓
+Future Order Foundation
+```
+
+Реализованные экраны:
+- index.html
+- breakdown.html
+- variables.html
+- formulas.html
+- drafts.html
+- estimates.html
+- ebol.html
+
+MVP используется для:
+- business validation;
+- workflow modeling;
+- CEO/dev alignment;
+- pricing architecture design;
+- подготовки backend specification.
+
+---
+
+# 4. Основные экраны
+
+## 4.1 index.html — Broker Quote Screen
 
 Главный рабочий экран брокера.
 
 Назначение:
-- создать новый quote;
-- заполнить customer / route info;
+- создать quote;
+- заполнить customer data;
+- указать ZIP route;
 - добавить items;
 - выбрать quote options;
-- получить итоговую стоимость;
-- отправить estimate.
+- получить estimate.
 
 Экран должен оставаться:
-- простым;
 - быстрым;
-- интуитивным.
+- простым;
+- broker-first.
 
-Глубокая pricing logic не должна отображаться брокеру.
+Брокер не должен:
+- думать о formulas;
+- выбирать vehicle вручную;
+- интерпретировать operational coefficients;
+- рассчитывать crew logic.
 
 ---
 
-### 3.2 breakdown.html — Pricing Breakdown Screen
+## 4.2 breakdown.html — Pricing Breakdown
 
-Экран объяснения расчёта.
+Экран audit и explainable pricing.
 
 Назначение:
-- показать из чего сформировалась стоимость;
+- показать структуру цены;
 - показать operational cost;
 - показать additional charges;
 - показать margin;
-- показать rounding logic;
-- использоваться для review CEO и разработки.
+- показать rounding;
+- поддерживать review CEO и development.
 
-Экран не предназначен для редактирования.
-
-Все изменения выполняются через:
-
-```text
-index.html
-```
+Экран:
+- read-only;
+- не используется для редактирования quote.
 
 ---
 
-### 3.3 variables.html — Admin Variables Screen
+## 4.3 variables.html — Pricing Governance
 
-Административный экран pricing engine.
+Administrative pricing screen.
 
 Назначение:
 - управление pricing variables;
-- управление vehicle parameters;
-- управление fuel pricing;
-- управление packaging / crating logic;
-- управление access fees;
+- управление fuel logic;
+- управление packaging logic;
+- управление access coefficients;
 - управление formula versions;
-- поддержка auditability.
+- управление helper pricing;
+- pricing governance.
 
-Брокеры не должны менять variables напрямую.
+Variables должны редактироваться только admin role.
 
 ---
 
-### 3.4 drafts.html — Draft Management
+## 4.4 formulas.html — Formula Documentation
+
+Документация formulas и pricing logic.
 
 Назначение:
-- хранение черновиков quote;
+- explain formulas;
+- document business rules;
+- align business and development;
+- хранить pricing references.
+
+Экран не является pricing engine.
+
+---
+
+## 4.5 drafts.html — Draft Workflow
+
+Draft management screen.
+
+Назначение:
+- autosave workflow;
 - reopening draft;
 - duplicate draft;
-- autosave workflow.
+- temporary quote editing.
 
-Draft остаётся редактируемым.
-
----
-
-### 3.5 estimates.html — Sent Estimates
-
-Назначение:
-- хранение отправленных estimate;
-- отслеживание статусов;
-- повторная отправка;
-- reopen as draft;
-- convert to invoice.
-
-Estimate и Draft — разные сущности.
+Ключевое правило:
 
 ```text
 Draft = editable
-Estimate = frozen customer-facing version
 ```
 
 ---
 
-## 4. Lifecycle системы
+## 4.6 estimates.html — Estimate History
+
+Estimate management screen.
+
+Назначение:
+- хранение generated estimates;
+- tracking estimate statuses;
+- reopen as draft;
+- future invoice conversion.
+
+Ключевое правило:
+
+```text
+Estimate = frozen snapshot
+```
+
+---
+
+## 4.7 ebol.html — Operational Execution Screen
+
+Operational execution layer.
+
+Назначение:
+- item verification;
+- pickup confirmation;
+- delivery confirmation;
+- item photos;
+- signatures;
+- exceptions;
+- POD workflow.
+
+eBOL не должен изменять pricing.
+
+eBOL работает с frozen estimate snapshot.
+
+---
+
+# 5. Lifecycle системы
+
+Полный lifecycle:
 
 ```text
 Draft
@@ -148,80 +256,20 @@ Completed Delivery
 ```
 
 Текущий MVP покрывает:
+- Draft;
+- Estimate;
+- Breakdown;
+- eBOL concept.
+
+---
+
+# 6. Архитектурный принцип pricing engine
+
+Ключевой принцип:
 
 ```text
-Draft
-↓
-Estimate
+UI не должен владеть pricing logic.
 ```
-
-Следующие этапы:
-- Invoice
-- Orders
-- eBOL
-
----
-
-## 5. Разделение слоёв системы
-
-### 5.1 Commercial Layer
-
-Отвечает за:
-- создание quote;
-- pricing;
-- discounts;
-- margin;
-- estimate generation.
-
-Основные экраны:
-- index.html
-- drafts.html
-- estimates.html
-- breakdown.html
-
----
-
-### 5.2 Pricing Governance Layer
-
-Отвечает за:
-- variables;
-- formulas;
-- fuel rates;
-- vehicle logic;
-- pricing versions;
-- admin changes;
-- audit trail.
-
-Основной экран:
-
-```text
-variables.html
-```
-
----
-
-### 5.3 Operational Layer
-
-Будущий operational layer.
-
-Отвечает за:
-- order execution;
-- pickup workflow;
-- delivery workflow;
-- item checklist;
-- photos;
-- signatures;
-- POD / eBOL.
-
-Будущие экраны:
-- orders.html
-- ebol.html
-
----
-
-## 6. Архитектурный принцип pricing engine
-
-UI не должен содержать критичную pricing logic.
 
 Правильная архитектура:
 
@@ -235,29 +283,32 @@ Calculation Result
 UI Display
 ```
 
-HTML-страницы MVP демонстрируют:
-- workflow;
-- структуру данных;
-- формулы;
-- бизнес-логику;
-- output calculations.
+Frontend должен:
+- отображать данные;
+- отправлять input;
+- показывать results.
 
-Production system должен рассчитывать стоимость на backend.
+Frontend не должен:
+- хранить formulas;
+- рассчитывать pricing;
+- хранить hidden business logic.
 
 ---
 
-## 7. Общий pricing flow
+# 7. Общий pricing flow
 
 Высокоуровневая последовательность расчёта:
 
 ```text
-Customer / Route Input
+Customer Input
+↓
+Route Input
 ↓
 Items Input
 ↓
-Physical Volume Calculation
+Physical Volume
 ↓
-Effective Volume Calculation
+Effective Volume
 ↓
 Vehicle Fit
 ↓
@@ -265,42 +316,42 @@ Operational Cost
 ↓
 Additional Charges
 ↓
-Discounts
-↓
 Margin
 ↓
 Rounding
 ↓
-Final Estimate Price
+Final Estimate
 ```
 
 ---
 
-## 8. Основные pricing components
+# 8. Основные pricing components
 
-### 8.1 Operational Cost
+## 8.1 Operational Cost
 
-Operational Cost включает:
+Operational Cost состоит из:
 
 ```text
-Pickup Cost
-+ Interstate Cost
-+ Delivery Cost
+Pickup Stage
++
+Interstate Stage
++
+Delivery Stage
 ```
 
-Примеры:
+Может включать:
 - labor;
 - mileage;
 - fuel;
 - vehicle cost;
-- handling;
 - tolls;
 - parking;
+- handling;
 - access fees.
 
 ---
 
-### 8.2 Additional Charges
+## 8.2 Additional Charges
 
 Additional Charges включает:
 
@@ -310,34 +361,61 @@ Crating
 Storage
 Insurance
 Exclusive Delivery
+COI
 Access Fees
 Zone Fees
 ```
 
-Additional Charges не должны дублировать operational stage costs.
+Additional Charges не должны дублировать operational stage cost.
 
 ---
 
-### 8.3 Margin
+## 8.3 Effective Volume Logic
 
-Margin рассчитывается после:
-- operational cost;
-- additional charges.
+Система рассчитывает:
+- physical volume;
+- effective volume;
+- stackability impact.
 
-Пример:
+Fragile и non-stackable items увеличивают:
+- effective volume;
+- vehicle requirements;
+- operational complexity.
+
+---
+
+## 8.4 Helper Logic
+
+Additional helpers:
+- рассчитываются отдельно;
+- имеют minimum billable time = 2 hours.
+
+Crew logic определяется:
+- item weight;
+- effective volume;
+- access conditions;
+- handling complexity.
+
+---
+
+## 8.5 Final Price Logic
 
 ```text
-Margin = (Operational Cost + Additional Charges) × Margin Rate
+Raw Final Price =
+Operational Cost
++
+Additional Charges
++
+Margin
+-
+Discounts
 ```
 
----
-
-### 8.4 Final Price
-
-Финальная стоимость округляется вверх.
+Финальная стоимость:
 
 ```text
-Rounded Final Price = CEILING(Raw Final Price, Rounding Rule)
+Rounded Final Price =
+CEILING(Raw Final Price, 10)
 ```
 
 Текущее правило:
@@ -348,22 +426,20 @@ UP to nearest $10
 
 ---
 
-## 9. Variables Governance
+# 9. Snapshot Logic
 
-Variables управляются admin role.
+Каждый generated estimate должен фиксировать snapshot:
 
-Примеры variables:
-- fuel surcharge;
-- vehicle capacity;
-- cost per mile;
-- margin rate;
-- storage rate;
-- packaging cost;
-- crating coefficients;
-- stackability coefficients;
-- access fees;
-- NYC tolls / parking / ticket reserve;
-- rounding rules.
+```text
+Customer Data
+Route Data
+Items Data
+Selected Options
+Variables Snapshot
+Formula Version
+Calculation Components
+Final Rounded Price
+```
 
 Ключевое правило:
 
@@ -373,42 +449,32 @@ Variables управляются admin role.
 уже отправленные estimates.
 ```
 
-Каждый estimate должен хранить:
+---
 
-```text
-formula_version
-variables_snapshot
-calculation_components
-```
+# 10. Variables Governance
+
+Variables управляются admin role.
+
+Примеры variables:
+- fuel surcharge;
+- vehicle capacity;
+- cost per mile;
+- helper rates;
+- margin rate;
+- storage rate;
+- packaging price;
+- crating coefficients;
+- stackability coefficients;
+- access fees;
+- COI fees;
+- zone fees;
+- rounding rules.
 
 ---
 
-## 10. Snapshot Logic
+# 11. Роли системы
 
-При генерации estimate система должна фиксировать snapshot:
-
-```text
-Customer Data
-Route Data
-Items Data
-Selected Options
-Variables Snapshot
-Formula Version
-Calculation Result
-Final Rounded Price
-```
-
-Это необходимо для:
-- auditability;
-- dispute resolution;
-- стабильности pricing;
-- consistency customer communication.
-
----
-
-## 11. Роли системы
-
-### Broker
+## Broker
 
 Может:
 - создать quote;
@@ -419,95 +485,74 @@ Final Rounded Price
 - смотреть breakdown.
 
 Не должен:
-- менять variables;
+- менять pricing variables;
 - менять formula versions;
-- изменять скрытую pricing logic.
+- изменять hidden pricing logic.
 
 ---
 
-### Admin
+## Admin
 
 Может:
 - менять variables;
 - активировать formula versions;
+- обновлять pricing rules;
 - обновлять vehicle parameters;
-- управлять pricing rules;
-- экспортировать snapshots.
+- управлять governance.
 
 Не должен:
-- редактировать customer quote data без audit trail.
+- изменять customer-facing estimate без audit trail.
 
 ---
 
-### Future Operations User
+## Future Operations User
 
 Может:
 - управлять order;
-- фиксировать pickup;
-- фиксировать delivery;
+- подтверждать pickup;
+- подтверждать delivery;
 - загружать item photos;
 - работать с eBOL;
-- фиксировать damage/comments.
+- фиксировать exceptions;
+- генерировать POD.
 
 ---
 
-## 12. Планируемые интеграции
+# 12. Integration Layer
 
-Потенциальные интеграции:
+Планируемые интеграции:
 
 ```text
 Kommo CRM
 Stripe / Square
 Google Maps / Mapbox
-AAA Fuel Prices
+Fuel APIs
 Email / SMS services
-Storage / Warehouse module
-eBOL / POD workflow
+Storage / Warehouse systems
 Dispatch / Routing systems
+eBOL / POD workflow
 ```
 
 ---
 
-## 13. Границы MVP
+# 13. Основные архитектурные риски
 
-MVP не является production-ready системой.
-
-Назначение MVP:
-- validate workflow;
-- согласовать логику с CEO;
-- согласовать архитектуру с разработкой;
-- разделить calculator / pricing engine / operations;
-- подготовить technical specification.
-
-В MVP не входят:
-- backend engine;
-- database;
-- authentication;
-- API integration;
-- real PDF generation;
-- payment processing;
-- production eBOL workflow.
-
----
-
-## 14. Основные риски
-
-### Risk 1 — Pricing logic в UI
+## Risk 1 — Pricing logic в UI
 
 Проблема:
 - сложность поддержки;
-- отсутствие auditability;
-- высокий риск ошибок.
+- высокий риск ошибок;
+- отсутствие auditability.
 
 Решение:
 
 ```text
-Backend Pricing Engine
+Centralized Backend Pricing Engine
 ```
 
 ---
 
-### Risk 2 — Draft и Estimate смешаны
+## Risk 2 — Draft и Estimate смешаны
 
 Проблема:
 - изменение уже отправленных цен;
@@ -517,15 +562,15 @@ Backend Pricing Engine
 
 ```text
 Draft = editable
-Estimate = frozen
+Estimate = frozen snapshot
 ```
 
 ---
 
-### Risk 3 — Variables меняются без snapshot
+## Risk 3 — Variables без snapshots
 
 Проблема:
-- старые estimates пересчитываются задним числом.
+- historical estimates пересчитываются задним числом.
 
 Решение:
 
@@ -535,23 +580,39 @@ Variables Snapshot per Estimate
 
 ---
 
-### Risk 4 — Orders смешиваются с Calculator
+## Risk 4 — Orders смешиваются с Calculator
 
 Проблема:
 - перегруженный broker workflow;
 - сложный интерфейс;
-- потеря скорости работы.
+- снижение скорости quote creation.
 
 Решение:
 
 ```text
-Calculator = quote creation
-Orders/eBOL = operational execution
+Calculator = commercial workflow
+Orders/eBOL = operational workflow
 ```
 
 ---
 
-## 15. Целевая архитектура системы
+# 14. Границы MVP
+
+Текущий MVP не является production-ready системой.
+
+В MVP пока не входят:
+- backend engine;
+- database;
+- authentication;
+- API integrations;
+- real PDF generation;
+- payment processing;
+- production eBOL workflow;
+- real-time pricing engine.
+
+---
+
+# 15. Целевая архитектура системы
 
 ```text
 Broker UI
@@ -561,148 +622,6 @@ Quote Draft
 Pricing Engine
 ↓
 Estimate Snapshot
-↓
-Invoice
-↓
-Order
-↓
-eBOL
-```
-
-Калькулятор должен оставаться простым и быстрым для брокера.
-
-Сложность системы должна находиться:
-- в backend logic;
-- в pricing engine;
-- в operational workflows,
-а не в broker UI.
-
-
-# Zaberman Broker Calculator MVP — Architecture
-
-## 1. Purpose
-
-Zaberman Broker Calculator MVP is designed as an operational pricing system for interstate furniture, bulky-item, fragile-item, and white-glove delivery quotes.
-
-The system must help brokers create accurate quotes quickly, while keeping pricing logic centralized, explainable, and scalable.
-
-The main principle:
-
-```text
-Broker should not think about the system.
-Broker should enter data, receive quote, and send estimate.
-```
-
----
-
-## 2. Product Scope
-
-The MVP is focused on three primary layers:
-
-```text
-1. Broker Quote Creation
-2. Pricing Breakdown / Audit
-3. Admin Variables / Pricing Governance
-```
-
-Additional lifecycle pages support the quote process:
-
-```text
-Drafts
-Estimates
-Future: Invoice
-Future: Orders
-Future: eBOL
-```
-
----
-
-## 3. Main Screens
-
-## 3.1 index.html — Broker Quote Screen
-
-Primary working screen for brokers.
-
-Purpose:
-- create a new quote;
-- enter customer and route data;
-- add items;
-- select quote options;
-- receive final rounded price;
-- generate estimate.
-
-This screen should stay simple and fast.
-
-It must not expose deep pricing logic to the broker.
-
----
-
-## 3.2 breakdown.html — Pricing Explanation Screen
-
-Read-only explanation screen.
-
-Purpose:
-- explain how quote price was calculated;
-- show operational cost;
-- show additional charges;
-- show margin;
-- show rounding;
-- support CEO review and developer alignment.
-
-This screen is not used for direct editing.
-
-Editing must happen in `index.html`.
-
----
-
-## 3.3 variables.html — Admin Variables Screen
-
-Admin-only configuration screen.
-
-Purpose:
-- manage pricing variables;
-- manage vehicle parameters;
-- manage fuel prices;
-- manage packaging and crating variables;
-- manage access and zone fees;
-- manage formula versioning;
-- support auditability.
-
-Brokers should not directly change variables.
-
----
-
-## 3.4 drafts.html — Draft Management
-
-Purpose:
-- show unfinished quote drafts;
-- allow broker to reopen, duplicate, or delete drafts;
-- support auto-save workflow.
-
-Drafts are editable.
-
----
-
-## 3.5 estimates.html — Sent Estimates
-
-Purpose:
-- show customer-facing estimates already generated or sent;
-- track estimate status;
-- support send again, reopen as draft, and convert to invoice.
-
-Estimate is not the same as draft.
-
-Draft is editable.  
-Estimate is a sent customer-facing version.
-
----
-
-## 4. Core Lifecycle
-
-```text
-Draft
-↓
-Estimate
 ↓
 Invoice
 ↓
@@ -713,409 +632,10 @@ eBOL
 Completed Delivery
 ```
 
-MVP currently focuses on:
+Главный принцип:
 
 ```text
-Draft
-↓
-Estimate
+Broker UI должен оставаться простым.
+Сложность должна находиться
+в backend logic и operational workflows.
 ```
-
-Future expansion:
-
-```text
-Invoice
-Order
-eBOL
-```
-
----
-
-## 5. Layer Separation
-
-## 5.1 Commercial Layer
-
-Responsible for:
-- quote creation;
-- estimate generation;
-- pricing;
-- discounts;
-- margin;
-- customer-facing price.
-
-Main screens:
-- index.html
-- drafts.html
-- estimates.html
-- breakdown.html
-
----
-
-## 5.2 Pricing Governance Layer
-
-Responsible for:
-- variables;
-- formulas;
-- formula versions;
-- fuel rates;
-- vehicle parameters;
-- admin changes;
-- audit trail.
-
-Main screen:
-- variables.html
-
----
-
-## 5.3 Operational Layer
-
-Responsible for future order execution:
-- order status;
-- pickup;
-- delivery;
-- item checklist;
-- eBOL;
-- photos;
-- signatures;
-- POD.
-
-Future screens:
-- orders.html
-- ebol.html
-
----
-
-## 6. Pricing Engine Principle
-
-The UI must not contain business-critical calculation logic.
-
-Correct architecture:
-
-```text
-User input
-↓
-Backend pricing engine
-↓
-Calculation result
-↓
-UI display
-```
-
-HTML pages in this MVP are wireframes and must only demonstrate:
-- workflow;
-- data structure;
-- calculation outputs;
-- business rules.
-
-Production system must calculate values on backend.
-
----
-
-## 7. Pricing Flow
-
-High-level pricing sequence:
-
-```text
-Customer / Route Input
-↓
-Items Input
-↓
-Physical Volume Calculation
-↓
-Effective Volume Calculation
-↓
-Vehicle Fit
-↓
-Operational Cost
-↓
-Additional Charges
-↓
-Discounts
-↓
-Margin
-↓
-Rounding
-↓
-Final Estimate Price
-```
-
----
-
-## 8. Key Pricing Components
-
-## 8.1 Operational Cost
-
-Operational Cost includes:
-
-```text
-Pickup Cost
-+ Interstate Cost
-+ Delivery Cost
-```
-
-Examples:
-- labor;
-- mileage;
-- fuel;
-- vehicle cost;
-- handling;
-- tolls;
-- parking;
-- access cost.
-
----
-
-## 8.2 Additional Charges
-
-Additional Charges include:
-
-```text
-Packaging
-Crating
-Storage
-Insurance
-Exclusive Delivery
-Access Fees
-Zone Fees
-```
-
-Additional charges must not duplicate operational stage costs.
-
----
-
-## 8.3 Margin
-
-Margin is calculated after operational cost and additional charges.
-
-Example:
-
-```text
-Margin = (Operational Cost + Additional Charges) × Margin Rate
-```
-
----
-
-## 8.4 Final Price
-
-Final price is rounded up.
-
-```text
-Rounded Final Price = CEILING(Raw Final Price, Rounding Rule)
-```
-
-Current rounding rule:
-
-```text
-UP to nearest $10
-```
-
----
-
-## 9. Variables Governance
-
-Variables are managed by admin.
-
-Examples:
-- fuel surcharge;
-- vehicle capacity;
-- vehicle cost per mile;
-- margin rate;
-- storage rate;
-- packaging price;
-- crating coefficients;
-- stackability coefficients;
-- access fees;
-- NYC tolls / parking / ticket reserve;
-- rounding rule.
-
-Important rule:
-
-```text
-Changing variables must not change already sent estimates.
-```
-
-Each estimate must store:
-
-```text
-formula_version
-variables_snapshot
-calculation_components
-```
-
----
-
-## 10. Snapshot Logic
-
-When an estimate is generated, the system must freeze:
-
-```text
-Customer data
-Route data
-Items data
-Selected options
-Variables snapshot
-Formula version
-Calculation result
-Final rounded price
-```
-
-This protects:
-- auditability;
-- customer communication;
-- price consistency;
-- dispute resolution.
-
----
-
-## 11. Roles
-
-## Broker
-
-Can:
-- create quote;
-- edit draft;
-- add items;
-- recalculate quote;
-- generate estimate;
-- view breakdown.
-
-Should not:
-- edit admin variables;
-- change formula versions;
-- manually override hidden calculation logic.
-
----
-
-## Admin
-
-Can:
-- edit variables;
-- activate formula versions;
-- update vehicle parameters;
-- manage system rules;
-- export snapshots.
-
-Should not:
-- edit customer quote data directly without audit.
-
----
-
-## Future Operations User
-
-Can:
-- manage order;
-- check pickup;
-- check delivery;
-- upload item photos;
-- complete eBOL;
-- record damage/comments.
-
----
-
-## 12. Future Integrations
-
-Potential integrations:
-
-```text
-Kommo CRM
-Stripe / Square
-Google Maps / Mapbox
-AAA Fuel Prices
-Email / SMS service
-Storage / Warehouse module
-eBOL / POD workflow
-Dispatch / Routing system
-```
-
----
-
-## 13. MVP Boundaries
-
-MVP is not final production system.
-
-MVP is used to:
-- validate workflow;
-- align CEO and development;
-- clarify system logic;
-- separate calculator, pricing engine, and operations;
-- prepare technical specification.
-
-Not included in MVP frontend:
-- backend calculation engine;
-- real authentication;
-- database;
-- API integration;
-- real PDF generation;
-- real payment processing;
-- real eBOL execution.
-
----
-
-## 14. Key Risks
-
-## Risk 1: UI contains pricing logic
-
-Impact:
-- formulas become hard to maintain;
-- audit becomes impossible.
-
-Solution:
-- backend pricing engine;
-- UI displays calculated results only.
-
----
-
-## Risk 2: Draft and Estimate are mixed
-
-Impact:
-- sent prices can change unexpectedly;
-- customer communication becomes inconsistent.
-
-Solution:
-- Draft is editable.
-- Estimate is frozen/versioned.
-
----
-
-## Risk 3: Variables are changed without snapshots
-
-Impact:
-- old estimates recalculate incorrectly.
-
-Solution:
-- store variables snapshot per estimate.
-
----
-
-## Risk 4: Orders and eBOL are mixed into calculator
-
-Impact:
-- broker screen becomes overloaded.
-
-Solution:
-- calculator handles quote.
-- orders/eBOL handle execution.
-
----
-
-## 15. Target Architecture Summary
-
-```text
-Broker UI
-↓
-Quote Draft
-↓
-Pricing Engine
-↓
-Estimate Snapshot
-↓
-Invoice
-↓
-Order
-↓
-eBOL
-```
-
-The calculator should remain simple for brokers.
-
-The system behind it can be complex, but the complexity must be hidden behind clear workflows and backend logic.
