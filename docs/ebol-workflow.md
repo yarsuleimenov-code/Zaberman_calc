@@ -1,419 +1,594 @@
 # Zaberman Broker Calculator MVP — eBOL Workflow
 
-## 1. Purpose
+# 1. Назначение eBOL
 
-Документ описывает будущий operational workflow системы eBOL (electronic Bill of Lading).
+eBOL (Electronic Bill of Lading) является operational execution workflow системы.
 
-Цель:
-- фиксировать pickup/delivery execution;
-- сопоставлять items;
-- хранить photos;
-- фиксировать POD;
-- поддерживать damage tracking;
-- поддерживать operational auditability.
-
----
-
-# 2. Core Principle
-
-Calculator отвечает за:
-- pricing;
-- estimate;
-- customer-facing quote.
-
-eBOL отвечает за:
-- operational execution;
-- pickup;
-- delivery;
-- proof of service.
+eBOL используется для:
+- item verification;
+- pickup confirmation;
+- delivery confirmation;
+- photo verification;
+- POD workflow;
+- damage tracking;
+- dispute prevention;
+- operational auditability.
 
 ---
 
-# 3. Lifecycle
+# 2. Основной принцип
+
+Ключевой принцип:
 
 ```text
-Draft
+eBOL не является pricing system.
+```
+
+eBOL:
+- не пересчитывает estimate;
+- не изменяет pricing;
+- не изменяет formula logic.
+
+eBOL работает с:
+- frozen estimate snapshot;
+- operational execution data.
+
+---
+
+# 3. High-Level Workflow
+
+Полный workflow:
+
+```text
+Estimate Approved
 ↓
-Estimate
+Order Created
 ↓
-Approved Estimate
+eBOL Created
 ↓
-Order
+Pickup Verification
 ↓
-eBOL
+Transit
+↓
+Delivery Verification
+↓
+Signatures
+↓
+POD Generation
 ↓
 Completed Delivery
 ```
 
 ---
 
-# 4. Order Creation
+# 4. Order → eBOL Transition
 
-## Trigger
+eBOL создаётся:
+- после создания Order;
+- после подтверждения estimate/invoice;
+- перед operational execution.
 
-Order создаётся после:
+---
+
+## eBOL получает snapshot
 
 ```text
-Estimate Status = Approved
+Customer Data
+Pickup Address
+Delivery Address
+Items Snapshot
+Access Conditions
+Operational Notes
 ```
 
 ---
 
-## Snapshot Rule
-
-Order получает frozen snapshot:
+## Ключевое правило
 
 ```text
-Customer
-Addresses
-Items
-Vehicle
-Pricing
-Notes
+eBOL использует frozen estimate snapshot.
 ```
 
-После создания Order:
-- pricing не должен пересчитываться;
-- items не должны silently изменяться.
+Изменение estimate:
+- не должно изменять существующий eBOL.
 
 ---
 
-# 5. Operational Roles
+# 5. Pickup Workflow
 
-## Broker
-
-Отвечает за:
-- quote;
-- estimate;
-- customer communication.
+Pickup workflow начинается:
+- при прибытии crew;
+- перед loading.
 
 ---
 
-## Dispatcher
-
-Отвечает за:
-- route assignment;
-- crew assignment;
-- operational coordination.
-
----
-
-## Pickup / Delivery Team
-
-Отвечает за:
-- item verification;
-- photos;
-- pickup confirmation;
-- delivery confirmation;
-- damage reporting.
-
----
-
-# 6. Order Status Flow
-
-## Suggested Statuses
+## Pickup Workflow Sequence
 
 ```text
-Pending Pickup
+Arrival
 ↓
-Pickup Scheduled
+Address Verification
 ↓
-Picked Up
+Item Verification
 ↓
-In Transit
+Condition Verification
 ↓
-Warehouse Storage
+Pickup Photos
 ↓
-Out For Delivery
+Pickup Signature
 ↓
-Delivered
-↓
-Completed
+Pickup Completed
 ```
 
 ---
 
-## Exception Statuses
-
-```text
-Issue Reported
-Claim
-Delivery Failed
-Customer Unavailable
-Damage Review
-```
-
----
-
-# 7. Item Workflow
-
-Каждый item должен существовать отдельно внутри Order.
-
----
-
-## Item Data
-
-Каждый item хранит:
-- item name;
-- dimensions;
-- weight;
-- packaging;
-- fragile flag;
-- non-stackable flag;
-- crated flag;
-- comments;
-- declared value.
-
----
-
-## Item Verification
-
-Pickup/delivery team должны иметь возможность:
-- видеть item list;
-- сопоставлять physical items;
-- отмечать completion status.
-
----
-
-# 8. Pickup Workflow
-
-## Pickup Screen
-
-Pickup workflow должен позволять:
-
-```text
-View Items
-↓
-Verify Item
-↓
-Take Pickup Photo
-↓
-Add Comment
-↓
-Mark Picked Up
-```
-
----
-
-## Pickup Item Status
+## Pickup Verification
 
 Для каждого item:
+- подтверждается наличие;
+- фиксируется состояние;
+- фиксируются comments;
+- фиксируются photos.
+
+---
+
+## Pickup Statuses
+
+Примеры:
 
 ```text
-Not Picked Up
-Picked Up
+Pending
+Verified
+Loaded
 Missing
-Damaged
-Rejected
+Refused
+Damaged Before Pickup
+```
+
+---
+
+# 6. Delivery Workflow
+
+Delivery workflow начинается:
+- при прибытии на delivery address;
+- перед unloading.
+
+---
+
+## Delivery Workflow Sequence
+
+```text
+Arrival
+↓
+Item Verification
+↓
+Condition Verification
+↓
+Delivery Photos
+↓
+Recipient Signature
+↓
+Delivery Completed
+```
+
+---
+
+## Delivery Statuses
+
+Примеры:
+
+```text
+Pending
+Delivered
+Partially Delivered
+Refused
+Damaged During Delivery
+Missing
+```
+
+---
+
+# 7. Item Verification
+
+Каждый item является отдельной operational entity.
+
+---
+
+## Item Verification включает
+
+```text
+Pickup Status
+Delivery Status
+Pickup Condition
+Delivery Condition
+Photos
+Comments
+Exceptions
+```
+
+---
+
+## Ключевое правило
+
+```text
+Item verification item-level.
+```
+
+Нельзя:
+- применять status ко всему order;
+- объединять exceptions между items.
+
+---
+
+# 8. Photos Workflow
+
+Photos являются обязательной частью eBOL.
+
+---
+
+## Типы photos
+
+```text
+Pickup Photo
+Delivery Photo
+Damage Photo
+Warehouse Photo
+Address Photo
+Signature Photo
 ```
 
 ---
 
 ## Pickup Photos
 
-Pickup photos должны:
-- храниться отдельно по item;
-- поддерживать multiple photos;
-- быть доступны внутри order history.
+Pickup photo фиксирует:
+- состояние item до loading;
+- упаковку;
+- visible damage;
+- наличие item.
 
 ---
 
-# 9. Delivery Workflow
+## Delivery Photos
 
-## Delivery Screen
+Delivery photo фиксирует:
+- состояние после delivery;
+- completed placement;
+- visible damage;
+- completed unloading.
 
-Delivery workflow должен позволять:
+---
+
+## Damage Photos
+
+Damage photos:
+- обязательны при exception;
+- привязываются к item;
+- должны храниться отдельно.
+
+---
+
+## Ключевое правило
 
 ```text
-View Items
-↓
-Verify Item
-↓
-Take Delivery Photo
-↓
-Add Comment
-↓
-Collect Signature
-↓
-Mark Delivered
+Photo attachment item-level.
 ```
 
 ---
 
-## Delivery Item Status
+# 9. Signature Workflow
 
-Для каждого item:
+Подписи являются proof entity.
+
+---
+
+## Типы signatures
 
 ```text
-Delivered
-Damaged
-Missing
-Customer Refused
-Exception
+Pickup Signature
+Delivery Signature
 ```
 
 ---
-
-# 10. Damage Workflow
-
-## Purpose
-
-Damage workflow фиксирует:
-- claims;
-- disputes;
-- operational incidents.
-
----
-
-## Damage Report
-
-Damage report должен содержать:
-- item reference;
-- photos;
-- damage description;
-- pickup/delivery stage;
-- timestamp;
-- uploaded by.
-
----
-
-# 11. Photo Workflow
-
-## Requirements
-
-Photos должны:
-- быть привязаны к item;
-- хранить timestamps;
-- хранить uploader;
-- поддерживать pickup/delivery separation.
-
----
-
-## Suggested Photo Types
-
-```text
-Pickup
-Delivery
-Damage
-Warehouse
-Exception
-```
-
----
-
-# 12. Signature Workflow
 
 ## Pickup Signature
 
-Pickup signature подтверждает:
-- item transfer;
-- pickup completion.
+Подтверждает:
+- item received for transportation;
+- pickup completed.
 
 ---
 
 ## Delivery Signature
 
-Delivery signature подтверждает:
-- successful delivery;
-- customer acceptance.
+Подтверждает:
+- item delivered;
+- delivery accepted;
+- POD completed.
 
 ---
 
-# 13. POD Logic
-
-POD (Proof of Delivery) должен содержать:
+## Ключевое правило
 
 ```text
-Delivered Items
-Delivery Photos
-Delivery Timestamp
-Recipient Signature
-Delivery Address
-Driver / Crew
+Delivery signature завершает POD workflow.
 ```
 
 ---
 
-# 14. eBOL Generation
+# 10. Exception Workflow
 
-eBOL должен генерироваться автоматически на основании:
-- order snapshot;
-- item statuses;
+Exception workflow используется для:
+- damage;
+- missing items;
+- refusal;
+- operational incidents.
+
+---
+
+## Exception Types
+
+Примеры:
+
+```text
+Damaged
+Missing
+Refused
+Incorrect Item
+Packaging Failure
+Access Problem
+```
+
+---
+
+## Exception Workflow
+
+```text
+Exception Detected
+↓
+Item Linked
+↓
+Photos Attached
+↓
+Comment Added
+↓
+Severity Selected
+↓
+Operational Review
+```
+
+---
+
+## Severity Examples
+
+```text
+Low
+Medium
+High
+Critical
+```
+
+---
+
+## Ключевое правило
+
+```text
+Exception всегда привязан к item.
+```
+
+---
+
+# 11. POD Workflow
+
+POD (Proof of Delivery) создаётся после:
+- delivery completion;
+- required photos;
+- recipient signature.
+
+---
+
+## POD включает
+
+```text
+Order Data
+Customer Data
+Items
+Statuses
+Photos
+Exceptions
+Signatures
+Completion Timestamp
+```
+
+---
+
+## POD Generation Flow
+
+```text
+Delivery Completed
++
+Photos Verified
++
+Signature Collected
+↓
+Generate POD
+```
+
+---
+
+# 12. Completion Logic
+
+Order считается completed только после:
+
+```text
+All Items Delivered
++
+Required Photos Uploaded
++
+Delivery Signature Collected
++
+Exceptions Processed
+```
+
+---
+
+## Completion Statuses
+
+Примеры:
+
+```text
+In Transit
+Awaiting Delivery
+Delivery Verification
+Completed
+Completed With Exceptions
+```
+
+---
+
+# 13. Immutable Rules
+
+## Immutable после completion
+
+После completed state:
+- eBOL snapshot;
 - photos;
 - signatures;
-- comments.
+- statuses;
+- POD
+
+не должны изменяться напрямую.
 
 ---
 
-## eBOL Must Include
+## Mutable до completion
+
+До completion разрешено:
+- update statuses;
+- upload photos;
+- add comments;
+- add exceptions.
+
+---
+
+# 14. Operational Roles
+
+## Dispatcher
+
+Может:
+- отслеживать order;
+- проверять statuses;
+- контролировать completion.
+
+---
+
+## Driver / Crew
+
+Может:
+- менять item statuses;
+- загружать photos;
+- добавлять comments;
+- собирать signatures.
+
+---
+
+## Operations Manager
+
+Может:
+- review exceptions;
+- approve operational resolution;
+- export POD/eBOL.
+
+---
+
+# 15. Edge Cases
+
+## Case 1 — Partial Delivery
+
+Пример:
 
 ```text
-Customer Info
-Pickup Address
-Delivery Address
-Items List
-Pickup Confirmation
-Delivery Confirmation
+2 items delivered
+1 item missing
+```
+
+Результат:
+- partial delivery;
+- open exception;
+- incomplete POD.
+
+---
+
+## Case 2 — Damaged Item
+
+Flow:
+
+```text
+Damage Detected
+↓
 Photos
-Damage Notes
-Signatures
+↓
+Comment
+↓
+Exception
+↓
+Manager Review
 ```
 
 ---
 
-# 15. Storage Workflow
+## Case 3 — Refused Delivery
 
-Если order переходит в storage:
+Flow:
 
 ```text
-Picked Up
+Recipient Refused
 ↓
-Warehouse Storage
+Reason Captured
 ↓
-Storage Tracking
+Photos Attached
 ↓
-Out For Delivery
+Exception Created
 ```
 
-Storage должен:
-- фиксировать storage dates;
-- фиксировать storage charges;
-- фиксировать warehouse status.
+---
+
+## Case 4 — Missing Pickup Item
+
+Пример:
+
+```text
+Item expected
+but not available during pickup
+```
+
+Результат:
+- pickup exception;
+- incomplete loading.
 
 ---
 
-# 16. Operational Auditability
+## Case 5 — Large Order
 
-Система должна хранить:
-- timestamps;
-- uploader;
-- signatures;
-- status changes;
-- comments;
-- item history.
+Пример:
 
----
+```text
+30-50 items
+```
 
-# 17. Future Expansion
-
-Future operational features:
-- driver mobile app;
-- offline photo upload;
-- route scanning;
-- barcode / QR item matching;
-- customer delivery tracking;
-- automated POD delivery;
-- claim workflow;
-- warehouse inventory tracking.
+Требования:
+- item-level tracking;
+- fast verification workflow;
+- scalable photo workflow.
 
 ---
 
-# 18. Key Architectural Rules
+# 16. Основные архитектурные правила
 
 ## Rule 1
 
 ```text
-Order uses frozen estimate snapshot.
+eBOL не изменяет pricing.
 ```
 
 ---
@@ -421,7 +596,7 @@ Order uses frozen estimate snapshot.
 ## Rule 2
 
 ```text
-Operational layer must not recalculate pricing.
+eBOL работает с frozen estimate snapshot.
 ```
 
 ---
@@ -429,11 +604,7 @@ Operational layer must not recalculate pricing.
 ## Rule 3
 
 ```text
-Every item must support:
-- status
-- comments
-- photos
-- verification
+Item verification всегда item-level.
 ```
 
 ---
@@ -441,8 +612,7 @@ Every item must support:
 ## Rule 4
 
 ```text
-eBOL must be generated automatically
-from operational data.
+Exception всегда привязан к item.
 ```
 
 ---
@@ -450,7 +620,51 @@ from operational data.
 ## Rule 5
 
 ```text
-Pickup and delivery workflows
-must remain item-based,
-not order-based only.
+Photos являются proof entity.
 ```
+
+---
+
+## Rule 6
+
+```text
+Delivery signature завершает POD workflow.
+```
+
+---
+
+# 17. Целевая backend архитектура
+
+Целевая архитектура eBOL workflow:
+
+```text
+Mobile App / Operations UI
+↓
+Operational API
+↓
+eBOL Service
+↓
+Photo Storage
+↓
+POD Generator
+↓
+Database
+```
+
+---
+
+# 18. Назначение документа
+
+Документ фиксирует:
+- operational execution flow;
+- eBOL lifecycle;
+- pickup/delivery workflow;
+- item verification logic;
+- POD generation logic;
+- operational boundaries.
+
+Основная задача:
+- обеспечить consistent operational workflow;
+- подготовить foundation для mobile/dispatch system;
+- предотвратить смешивание pricing и operational layers;
+- обеспечить proof and audit workflow.
