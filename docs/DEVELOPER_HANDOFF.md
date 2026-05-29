@@ -416,12 +416,12 @@ Pricing engine должен покрывать:
 - minimum quote;
 - manual review flags.
 
-## 8. Snapshot Architecture
+## 8. Архитектура snapshot
 
-Recommended flow:
+Рекомендуемый поток данных:
 
 ```text
-Broker Input
+Ввод данных брокером
 ↓
 QuoteDraft
 ↓
@@ -437,25 +437,25 @@ Estimate Document
 ↓
 PDF / Export Artifact
 ↓
-Customer Approval
+Подтверждение клиентом
 ↓
 Invoice / Order / eBOL
 ```
 
-Snapshot principles:
+Принципы snapshot:
 
-- Draft can be edited.
-- EstimateSnapshot cannot be edited.
-- Sent Estimate should not be overwritten.
-- Changes after sending should create a new version.
-- Historical estimates must not be recalculated when PricingVariables change.
-- eBOL should use frozen order/estimate snapshot, not live editable quote data.
+- Draft можно редактировать до генерации customer-facing Estimate.
+- EstimateSnapshot нельзя редактировать после создания.
+- Отправленный клиенту Estimate нельзя перезаписывать.
+- Любые изменения после отправки должны создавать новую версию Estimate или reopened draft.
+- Historical estimates не должны пересчитываться при изменении PricingVariables.
+- eBOL должен использовать frozen order/estimate snapshot, а не live editable quote data.
 
-## 9. API Expectations
+## 9. Ожидания к API
 
-Production API should expose clear contracts between frontend and backend.
+Production API должен иметь понятные контракты между frontend, backend и pricing engine.
 
-Suggested endpoints:
+Рекомендуемые endpoints:
 
 ```text
 POST   /api/quotes
@@ -493,9 +493,9 @@ POST   /api/orders/:id/ebol/signatures
 POST   /api/orders/:id/ebol/generate-pod
 ```
 
-Pricing calculate response should include:
+Ответ pricing calculation должен включать:
 
-- calculated totals;
+- рассчитанные totals;
 - breakdown components;
 - warnings;
 - validation errors;
@@ -503,7 +503,7 @@ Pricing calculate response should include:
 - variables version;
 - manual review flags.
 
-Example conceptual response:
+Пример концептуального response:
 
 ```json
 {
@@ -528,19 +528,19 @@ Example conceptual response:
 }
 ```
 
-## 10. Mock Value Mapping
+## 10. Соответствие mock values и production sources
 
-| Mock value | Current prototype source | Required production source |
+| Mock value | Текущий источник в prototype | Требуемый production source |
 |---|---|---|
-| Customer name, phone, email | Hardcoded HTML | Customer record, CRM, or validated broker input |
-| Pickup ZIP / Delivery ZIP | Hardcoded inputs | QuoteDraft route input |
-| Route miles | Static display | Maps API, internal route matrix, or approved route service |
+| Customer name, phone, email | Hardcoded HTML | Customer record, CRM или validated broker input |
+| Pickup ZIP / Delivery ZIP | Hardcoded inputs | Route input внутри QuoteDraft |
+| Route miles | Static display | Maps API, internal route matrix или approved route service |
 | Nearest route date | Static display | Dispatch/routing availability service |
-| Vehicle fit | Static display | Pricing engine vehicle selection |
+| Vehicle fit | Static display | Vehicle selection внутри pricing engine |
 | Required crew | Static display | Crew calculation rule |
-| Item volume | Static display | Dimensions x quantity calculation |
-| Effective volume | Static display | Pricing engine with coefficients |
-| Total weight | Static display | Sum of QuoteItem weights x quantities |
+| Item volume | Static display | Расчет dimensions x quantity |
+| Effective volume | Static display | Pricing engine с versioned coefficients |
+| Total weight | Static display | Сумма QuoteItem weight x quantity |
 | Packaging charges | Static display | Item-level packaging pricing rule |
 | Storage charges | Static display | Storage days x storage rate |
 | Insurance charges | Static display | Approved insurance/protection model |
@@ -552,12 +552,12 @@ Example conceptual response:
 | Draft list | Static table | Backend query with pagination |
 | Estimate list | Static table | Backend estimate history |
 | eBOL progress | Static counters | eBOL state machine |
-| Photos/signatures | Placeholders | File storage and signature capture |
+| Photos/signatures | Placeholders | File storage и signature capture |
 | Variables version | Static label | Versioned PricingVariables record |
 
-## 11. MVP Implementation Priorities
+## 11. Приоритеты MVP implementation
 
-Recommended MVP priorities:
+Рекомендуемые приоритеты MVP:
 
 1. Pricing engine.
 2. Quote draft persistence.
@@ -571,124 +571,124 @@ Recommended MVP priorities:
 10. Basic order conversion.
 11. Basic eBOL/POD workflow.
 
-MVP acceptance baseline:
+Минимальный acceptance baseline для MVP:
 
-- broker can create QuoteDraft;
-- broker can add/edit/delete items;
-- broker can save and resume draft;
-- system validates required data;
-- system calculates price through pricing engine;
-- system returns explainable breakdown;
-- broker can generate EstimateSnapshot;
-- customer-facing estimate is generated from snapshot;
-- sent estimate remains immutable;
-- changes after sending create a new version or reopened draft;
-- estimate can be converted into invoice/order.
+- broker может создать QuoteDraft;
+- broker может add/edit/delete items;
+- broker может сохранить draft и вернуться к нему позже;
+- система валидирует обязательные данные;
+- система рассчитывает цену через pricing engine;
+- система возвращает explainable breakdown;
+- broker может сгенерировать EstimateSnapshot;
+- customer-facing estimate генерируется из snapshot;
+- sent estimate остается immutable;
+- изменения после отправки создают новую version или reopened draft;
+- estimate можно конвертировать в invoice/order.
 
-## 12. Open Business Questions
+## 12. Открытые вопросы для business stakeholders
 
-These questions must be confirmed by business stakeholders before production implementation.
+Эти вопросы нужно подтвердить с business stakeholders до production implementation.
 
-### Margin formula
+### Формула margin
 
-- Is margin a percent of operational cost?
-- Is margin a percent of final customer price?
-- Is margin fixed, tiered, route-based, broker-based, or manually adjustable?
-- What is minimum allowed margin?
+- Margin считается как процент от operational cost?
+- Margin считается как процент от final customer price?
+- Margin фиксированный, tiered, route-based, broker-based или manually adjustable?
+- Какой minimum allowed margin?
 
 ### Fuel allocation
 
-- Is full route fuel cost charged to one quote?
-- Is interstate cost shared across consolidated deliveries?
-- What is the allocation formula?
-- Are there route minimums?
+- Полная стоимость fuel/route относится на один quote?
+- Interstate cost распределяется между consolidated deliveries?
+- Какая allocation formula должна использоваться?
+- Есть ли route minimums?
 
 ### Insurance / Protection model
 
-- What is included by default?
-- How does Released Value Protection work in customer-facing documents?
-- How is Full Value Protection priced?
-- Are fragile, antique, mirror, art, electronics and custom items priced differently?
-- Is there a processing fee?
-- What legal language is required?
+- Что включено по умолчанию?
+- Как Released Value Protection должен отображаться в customer-facing documents?
+- Как считается Full Value Protection?
+- Fragile, antique, mirror, art, electronics и custom items считаются по отдельным rules?
+- Есть ли processing fee?
+- Какой legal language обязателен?
 
 ### Volume coefficient logic
 
-- Are fragile, non-stackable and crated coefficients additive?
-- Are they multiplicative?
-- Should engine use max coefficient?
-- Does crate increase dimensions or apply separate handling fee?
-- Should effective volume influence vehicle fit only, price only, or both?
+- Fragile, non-stackable и crated coefficients должны быть additive?
+- Они должны быть multiplicative?
+- Pricing engine должен использовать max coefficient?
+- Crate увеличивает dimensions или применяется как отдельный handling fee?
+- Effective volume влияет только на vehicle fit, только на price или на оба параметра?
 
 ### Interstate vs local pricing
 
-- Are interstate and local formulas separate?
-- How are pickup and delivery local labor costs calculated?
-- Are there city/zone minimums?
-- Are there access fees by building type?
+- Interstate и local formulas должны быть отдельными?
+- Как считаются pickup и delivery local labor costs?
+- Есть ли city/zone minimums?
+- Есть ли access fees по building type?
 
 ### Payment terms
 
-- Is deposit required?
-- When is full payment due?
-- What payment provider will be used?
-- Are payment links generated from invoice or estimate?
+- Требуется ли deposit?
+- Когда должен быть due full payment?
+- Какой payment provider будет использоваться?
+- Payment links генерируются из invoice или estimate?
 
 ### Cancellation terms
 
-- What is cancellation fee?
-- What is rescheduling fee?
-- What happens after failed pickup?
-- What happens after failed delivery?
+- Какой cancellation fee?
+- Какой rescheduling fee?
+- Что происходит после failed pickup?
+- Что происходит после failed delivery?
 
 ### Quote expiration logic
 
-- How long is estimate valid?
-- Does fuel price change expire quote?
-- Do pricing variables changes require re-quote?
-- Can expired estimate be approved?
+- Как долго estimate остается valid?
+- Изменение fuel price должно expire quote?
+- Изменения pricing variables требуют re-quote?
+- Можно ли approve expired estimate?
 
-## 13. Developer Handoff Checklist
+## 13. Checklist передачи в разработку
 
-Before implementation starts, the development team should:
+Перед началом implementation команда разработки должна:
 
-- review all screens;
-- confirm domain model;
-- confirm entity ownership;
-- confirm quote lifecycle;
-- confirm estimate lifecycle;
-- confirm invoice lifecycle;
-- confirm order lifecycle;
-- confirm eBOL lifecycle;
-- confirm pricing formulas;
-- confirm pricing variables;
-- define API contract;
-- define snapshot structure;
-- define validation rules;
-- define estimate PDF requirements;
-- define legal text ownership;
-- define audit trail requirements;
-- define roles and permissions;
-- define data sources for fuel and routes;
-- define CRM integration points;
-- define payment integration points;
-- define file storage for PDFs/photos/signatures;
-- define test fixtures for pricing engine;
-- define production deployment architecture.
+- review всех экранов;
+- подтвердить domain model;
+- подтвердить entity ownership;
+- подтвердить quote lifecycle;
+- подтвердить estimate lifecycle;
+- подтвердить invoice lifecycle;
+- подтвердить order lifecycle;
+- подтвердить eBOL lifecycle;
+- подтвердить pricing formulas;
+- подтвердить pricing variables;
+- определить API contract;
+- определить snapshot structure;
+- определить validation rules;
+- определить estimate PDF requirements;
+- определить ownership legal text;
+- определить audit trail requirements;
+- определить roles and permissions;
+- определить data sources для fuel и routes;
+- определить CRM integration points;
+- определить payment integration points;
+- определить file storage для PDFs/photos/signatures;
+- определить test fixtures для pricing engine;
+- определить production deployment architecture.
 
-## 14. Final Note
+## 14. Финальное примечание
 
-This repository is valuable as a hi-fi wireframe and visual technical specification.
+Этот репозиторий ценен как hi-fi wireframe и visual technical specification.
 
-Production development should preserve:
+Production development должен сохранить:
 
 - broker-first workflow;
-- simple quote creation UX;
+- простой UX создания quote;
 - explainable pricing breakdown;
 - snapshot-based estimate generation;
-- clear separation between pricing layer and operational layer.
+- четкое разделение pricing layer и operational layer.
 
-Production development should rebuild:
+Production development должен заново реализовать:
 
 - calculations;
 - persistence;
@@ -700,4 +700,4 @@ Production development should rebuild:
 - state management;
 - business rule execution.
 
-The current screens are a guide, not the implementation.
+Текущие экраны являются guide/specification, а не production implementation.
